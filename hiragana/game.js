@@ -64,6 +64,7 @@ class bootGame extends Phaser.Scene{
         this.load.image("emptytile", "assets/sprites/emptytile.png");
         this.load.image("chibiusagi", "assets/sprites/chibi-usagi.png");
         this.load.image("gameover", "assets/sprites/yokudekimashita2.png");
+        this.load.image("resetbesttime","assets/sprites/resetbesttime.png");
 
         // Sprite sheet is a series of images combined into a larger image
         // A single image inside a sprite sheet is called a frame
@@ -109,14 +110,17 @@ class playGame extends Phaser.Scene{
         //console.log("Getting score position...");
  //       var scoreXY = this.getTilePosition(-0.8, 1);
         var scoreXY = this.getTilePosition(-0.9, 1.73);
-        var resetBestTimeBtn = this.add.sprite(scoreXY.x, scoreXY.y, "scorepanel");
+        this.add.image(scoreXY.x, scoreXY.y, "scorepanel");
+
+        var resetBestTimeXY = this.getTilePosition(-0.9,4.7);
+        var resetBestTimeBtn = this.add.sprite(resetBestTimeXY.x, resetBestTimeXY.y, "resetbesttime");
         resetBestTimeBtn.setInteractive();
         resetBestTimeBtn.on("pointerdown", function() {
             this.bestScore = 0;
             this.bestScoreText.text = displayTimeElapsed(this.bestScore);
             localStorage.setItem(gameOptions.localStorageName, 0);
         }, this);
-
+ 
         //this.add.image(scoreXY.x, scoreXY.y, "scorepanel");
         this.add.image(scoreXY.x, scoreXY.y -105, "scorelabels");
         var textXY = this.getTilePosition(-1.1, 0.0);
