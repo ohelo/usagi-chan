@@ -1,6 +1,7 @@
 // Make game variable accessible to window.onload and resize functions
 var game;
 var gameOptions = {
+    numChibi: 4,
     tileSize: 200,
     tileSpacing: 20,
     numKana: 46,
@@ -16,6 +17,9 @@ var gameOptions = {
 var timeText;
 var hits;
 var gameOver = false;
+var chibiArray = [];
+var gameOverImage;
+
 
 window.onload = function () {
     //console.log("gameOptions.tileSize = " + gameOptions.tileSize);
@@ -25,6 +29,12 @@ window.onload = function () {
     var gameConfig = {
         // scale object contains everything we need in order to tell Phaser how we want to
         // scale and align the canvas
+        physics: {
+            default: 'arcade',
+            arcade: {
+                //gravity: {y:1000},
+            }
+        },
         scale: {
             mode: Phaser.Scale.FIT,
             autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -53,7 +63,7 @@ class bootGame extends Phaser.Scene{
  
         this.load.image("emptytile", "assets/sprites/emptytile.png");
         this.load.image("chibiusagi", "assets/sprites/chibi-usagi.png");
-        //this.load.image("ka", "assets/ka.gif");
+        this.load.image("gameover", "assets/sprites/yokudekimashita2.png");
 
         // Sprite sheet is a series of images combined into a larger image
         // A single image inside a sprite sheet is called a frame
@@ -81,6 +91,7 @@ class playGame extends Phaser.Scene{
     }
     create(){
         hits = 0;
+
         //var timedEvent = this.time.addEvent({ delay: 6000000, callback: this.onClockEvent, callbackScope: this, repeat: 1 }); 
 //        this.timedEvent = this.time.addEvent({ delay: 6000000, callback: this.onClockEvent, callbackScope: this, loop: true });
         this.timedEvent = this.time.addEvent({ delay: 6000000, callback: this.onClockEvent, callbackScope: this, repeat: 1 });
@@ -130,6 +141,11 @@ class playGame extends Phaser.Scene{
         howTo.setOrigin(1, 0);
         var logo = this.add.sprite(game.config.width / 2, game.config.height, "logo");
         logo.setOrigin(0.5, 3.5); //center, bottom
+
+        var gameOverPosition = this.getTilePosition(7,4.5);
+        gameOverImage = this.add.image(gameOverPosition.x, gameOverPosition.y, "gameover");
+        //gameOverImage.setOrigin(0,0);
+        gameOverImage.setVisible(false);
 
         this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
 
@@ -204,6 +220,7 @@ class playGame extends Phaser.Scene{
         // Generate an array of random unique numbers 0-49
         var tileNum = 0;
         var color = new Phaser.Display.Color();
+        var chibiCount = 0;
         for(var i = gameOptions.boardSize.rows/2; i < gameOptions.boardSize.rows; i++){
             for(var j = 0; j < gameOptions.boardSize.cols; j++){
                 //console.log("Getting kana position...");
@@ -224,7 +241,11 @@ class playGame extends Phaser.Scene{
                     //kanaTile.setTint(0xffeedd);
                 }
                 else {
-                    this.add.sprite(tilePosition.x, tilePosition.y,"chibiusagi");
+                    var chibiTile = this.physics.add.sprite(tilePosition.x, tilePosition.y,"chibiusagi");
+                    //chibiTile.setName("chibi"+chibiCount++);
+                    chibiArray[chibiCount++] = chibiTile;
+                    //console.log (chibiTile.name);
+ 
                 }
 
               
@@ -267,6 +288,7 @@ class playGame extends Phaser.Scene{
             hits++;
             console.log(hits);
             if (hits == gameOptions.numKana) {
+            //if (hits == 3) { //for testing
                 //Game over, stop timer, congratulate user
                 //this.timedEvent.remove();
                //this.timedEvent.remove();
@@ -284,6 +306,27 @@ class playGame extends Phaser.Scene{
                    this.bestScore = currentScore;
                    localStorage.setItem(gameOptions.localStorageName, this.bestScore);
                 }
+                //Drop the chibi usagis
+                for (var i = 0; i < gameOptions.numChibi; i++) {
+                    chibiArray[i].setGravityY(1000);
+                    chibiArray[i].setBounce(0.7);
+                    chibiArray[i].setDrag(1);
+                    chibiArray[i].setCollideWorldBounds(true);
+                    chibiArray[i].setVelocity(100,0);
+
+                }
+                // this.tweens.add({
+                //     targets: gameOverImage,
+                //     //x:100,
+                //     ease: 'Sine.easeInOut',
+                //     //yoyo: true,
+                //     //repeat: -1,
+                //     duration:3000
+                // });
+
+                gameOverImage.setVisible(true);
+                gameOverImage.depth = 6;
+        
                  console.log("Game over");
 
             }
