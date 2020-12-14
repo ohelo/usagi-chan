@@ -1,3 +1,6 @@
+// Usagi-chan's Hiragana Drag-n-drop
+// By Andrea Shea
+//
 // Make game variable accessible to window.onload and resize functions
 var game;
 var gameOptions = {
@@ -22,7 +25,6 @@ var gameOverImage;
 
 
 window.onload = function () {
-    //console.log("gameOptions.tileSize = " + gameOptions.tileSize);
     var tileAndSpacing = gameOptions.tileSize + gameOptions.tileSpacing;
     var width = gameOptions.boardSize.cols * tileAndSpacing;
     width += gameOptions.tileSpacing;
@@ -93,13 +95,9 @@ class playGame extends Phaser.Scene{
     create(){
         hits = 0;
 
-        //var timedEvent = this.time.addEvent({ delay: 6000000, callback: this.onClockEvent, callbackScope: this, repeat: 1 }); 
-//        this.timedEvent = this.time.addEvent({ delay: 6000000, callback: this.onClockEvent, callbackScope: this, loop: true });
         this.timedEvent = this.time.addEvent({ delay: 6000000, callback: this.onClockEvent, callbackScope: this, repeat: 1 });
-        //this.timedEvent.remove(); //works at this location
      
         var timeXY = this.getTilePosition(-1, gameOptions.boardSize.cols - 1);
-        //timeText = this.add.text(timeXY.x, timeXY.y, '', { fontSize: '20px', fill: '#ffffff' });
         timeText = this.add.text(32,32);
         var restartXY = this.getTilePosition(-0.9, gameOptions.boardSize.cols -1.2);
         var restartButton = this.add.sprite(restartXY.x, restartXY.y, "restart");
@@ -107,8 +105,6 @@ class playGame extends Phaser.Scene{
         restartButton.on("pointerdown", function() {
             this.scene.start("PlayGame");
         }, this);
-        //console.log("Getting score position...");
- //       var scoreXY = this.getTilePosition(-0.8, 1);
         var scoreXY = this.getTilePosition(-0.9, 1.73);
         this.add.image(scoreXY.x, scoreXY.y, "scorepanel");
 
@@ -121,23 +117,17 @@ class playGame extends Phaser.Scene{
             localStorage.setItem(gameOptions.localStorageName, 0);
         }, this);
  
-        //this.add.image(scoreXY.x, scoreXY.y, "scorepanel");
-        this.add.image(scoreXY.x, scoreXY.y -105, "scorelabels");
+         this.add.image(scoreXY.x, scoreXY.y -105, "scorelabels");
         var textXY = this.getTilePosition(-1.1, 0.0);
         this.scoreText = this.add.bitmapText(textXY.x, textXY.y, "font", "0");
         textXY = this.getTilePosition(-1.1, 2.2);
         this.bestScore = localStorage.getItem(gameOptions.localStorageName);
         if (this.bestScore == null) {
-            console.log("best score was null");
             this.bestScore = 0;
         }
-        console.log("Best score from local storage: ", this.bestScore);
-        //this.bestScore = 20; //just for testing, need to remove
-        console.log("Best score from local storage (hardcoded): ", this.bestScore);
         var bestSeconds = displayTimeElapsed(this.bestScore);
         this.bestScoreText = this.add.bitmapText(textXY.x, textXY.y, "font", bestSeconds.toString());
         
-//        this.scoreText.text = timeText.text;
 
         var gameTitle = this.add.image(10, 5, "gametitle");
         gameTitle.setOrigin(0, 0);
@@ -148,7 +138,6 @@ class playGame extends Phaser.Scene{
 
         var gameOverPosition = this.getTilePosition(7,4.5);
         gameOverImage = this.add.image(gameOverPosition.x, gameOverPosition.y, "gameover");
-        //gameOverImage.setOrigin(0,0);
         gameOverImage.setVisible(false);
 
         this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
@@ -179,31 +168,22 @@ class playGame extends Phaser.Scene{
         "n","ro","yo","mo","ho","no","to","so","ko","o"];
      
         // Generate the romaji tiles, need to create them as dropzones
-        //console.log("before setting up romaji array");
         var romajiTileNum = 0;
-  //      for(var i = 0; i < gameOptions.boardSize.rows; i++){
-        for(var i = 0; i < gameOptions.boardSize.rows/2; i++){
+         for(var i = 0; i < gameOptions.boardSize.rows/2; i++){
             for(var j = 0; j < gameOptions.boardSize.cols; j++){
-                //console.log("Getting romaji position...");
                 var romajiTilePosition = this.getTilePosition(i, j);
                 this.add.image(romajiTilePosition.x, romajiTilePosition.y, "emptytile");
                 // Add from sprite sheet, last argument gives location
-                
-           //     var romajiTile = this.add.sprite(romajiTilePosition.x, romajiTilePosition.y, "romajiTiles", romajiTileNum);
                 
                 this.add.image(romajiTilePosition.x, romajiTilePosition.y, "romajiTiles", romajiTileNum);
                 
                 var romajiTile = this.add.zone(romajiTilePosition.x, romajiTilePosition.y, gameOptions.tileSize,gameOptions.tileSize).setRectangleDropZone(gameOptions.tileSize, gameOptions.tileSize);
                 
-                //console.log("romajiTileNum=" + romajiTileNum);
-                //console.log("romaji=" + romajiArray[romajiTileNum]);
                 romajiTile.setName(romajiArray[romajiTileNum]);
-               // romajiTile.setName("e");
                 romajiTileNum++;
             }
         }
         
-        ///////////////////////////
         // Create an array of kana
         
         var kanaArray = [["a",0],["i",1],["u",2], ["e",3], ["o",4],
@@ -221,15 +201,12 @@ class playGame extends Phaser.Scene{
                             
         Phaser.Utils.Array.Shuffle(kanaArray);
 
-        // Generate an array of random unique numbers 0-49
         var tileNum = 0;
         var color = new Phaser.Display.Color();
         var chibiCount = 0;
         for(var i = gameOptions.boardSize.rows/2; i < gameOptions.boardSize.rows; i++){
             for(var j = 0; j < gameOptions.boardSize.cols; j++){
-                //console.log("Getting kana position...");
                 var tilePosition = this.getTilePosition(i, j);
-                 //console.log("X: " + tilePosition.x + " Y: " + tilePosition.y);
                this.add.image(tilePosition.x, tilePosition.y, "emptytile");
                 // Add from sprite sheet, last argument gives location
                 
@@ -238,17 +215,12 @@ class playGame extends Phaser.Scene{
                     kanaTile.setInteractive();
                     this.input.setDraggable(kanaTile);
                     kanaTile.setName(kanaArray[tileNum][0]);
-                   // kanaTile.tintFill = true;
                     color.random(125,255);
-                    //color.setTo(0,255,255);
                     kanaTile.setTint(color.color);
-                    //kanaTile.setTint(0xffeedd);
                 }
                 else {
                     var chibiTile = this.physics.add.sprite(tilePosition.x, tilePosition.y,"chibiusagi");
-                    //chibiTile.setName("chibi"+chibiCount++);
                     chibiArray[chibiCount++] = chibiTile;
-                    //console.log (chibiTile.name);
  
                 }
 
@@ -280,8 +252,6 @@ class playGame extends Phaser.Scene{
     }
 
     doDrop(pointer,gameObject, dropZone) {
-      //console.log("gameObject name:" + gameObject.name);
-       // console.log("dropZone name:" + dropZone.name);
         // Check if the drag item has the same name as the drop zone
         if(gameObject.name == dropZone.name) {
 
@@ -290,21 +260,18 @@ class playGame extends Phaser.Scene{
             gameObject.depth = 0;
             gameObject.input.enabled = false;
             hits++;
-            console.log(hits);
             if (hits == gameOptions.numKana) {
             //if (hits == 3) { //for testing
-                //Game over, stop timer, congratulate user
-                //this.timedEvent.remove();
-               //this.timedEvent.remove();
+
+            //Game over, stop timer, congratulate user
                this.timedEvent.paused = true;
                var currentScore = this.timedEvent.getElapsedSeconds();
                gameOver = true;
                //check if current time is less than best time
-               //Math.floor(eTime);
-               console.log("current score: ",this.scoreText.text);
-               console.log("best score: ",this.bestScoreText.text);
-               console.log("this.bestScore: ", this.bestScore);
-               console.log("current score: ", currentScore);
+            //    console.log("current score: ",this.scoreText.text);
+            //    console.log("best score: ",this.bestScoreText.text);
+            //    console.log("this.bestScore: ", this.bestScore);
+            //    console.log("current score: ", currentScore);
                if (this.bestScore == 0 || currentScore < this.bestScore) {
                    this.bestScoreText.text = this.scoreText.text;
                    this.bestScore = currentScore;
@@ -319,19 +286,10 @@ class playGame extends Phaser.Scene{
                     chibiArray[i].setVelocity(100,0);
 
                 }
-                // this.tweens.add({
-                //     targets: gameOverImage,
-                //     //x:100,
-                //     ease: 'Sine.easeInOut',
-                //     //yoyo: true,
-                //     //repeat: -1,
-                //     duration:3000
-                // });
-
+ 
                 gameOverImage.setVisible(true);
                 gameOverImage.depth = 6;
         
-                 console.log("Game over");
 
             }
             
