@@ -23,6 +23,12 @@ var hits;
 var gameOver = false;
 var chibiArray = [];
 var gameOverImage;
+var romajiArray = ["wa", "ra", "ya", "ma", "ha", "na", "ta", "sa", "ka", "a",
+"blank", "ri", "blank", "mi", "hi", "ni", "chi", "shi", "ki", "i",
+"wo", "ru", "yu", "mu", "fu", "nu", "tsu", "su", "ku", "u",
+"blank", "re", "blank", "me", "he", "ne", "te", "se", "ke", "e",
+"n", "ro", "yo", "mo", "ho", "no", "to", "so", "ko", "o"];
+
 
 
 window.onload = function () {
@@ -113,13 +119,7 @@ class bootGame extends Phaser.Scene {
         var logo = this.add.sprite(game.config.width / 2, game.config.height, "logo");
         logo.setOrigin(0.5, 3.5); //center, bottom
 
-        var romajiArray = ["wa", "ra", "ya", "ma", "ha", "na", "ta", "sa", "ka", "a",
-            "blank", "ri", "blank", "mi", "hi", "ni", "chi", "shi", "ki", "i",
-            "wo", "ru", "yu", "mu", "fu", "nu", "tsu", "su", "ku", "u",
-            "blank", "re", "blank", "me", "he", "ne", "te", "se", "ke", "e",
-            "n", "ro", "yo", "mo", "ho", "no", "to", "so", "ko", "o"];
-
-        // Generate the romaji tiles, need to create them as dropzones
+        // Generate the romaji tiles
         var romajiTileNum = 0;
         for (var i = 0; i < gameOptions.boardSize.rows / 2; i++) {
             for (var j = 0; j < gameOptions.boardSize.cols; j++) {
@@ -202,18 +202,18 @@ class playGame extends Phaser.Scene {
 
         this.timedEvent = this.time.addEvent({ delay: 6000000, callback: this.onClockEvent, callbackScope: this, repeat: 1 });
 
-        var timeXY = this.getTilePosition(-1, gameOptions.boardSize.cols - 1);
+        var timeXY = getTilePosition(-1, gameOptions.boardSize.cols - 1);
         timeText = this.add.text(32, 32);
-        var restartXY = this.getTilePosition(-0.9, gameOptions.boardSize.cols - 1.2);
+        var restartXY = getTilePosition(-0.9, gameOptions.boardSize.cols - 1.2);
         var restartButton = this.add.sprite(restartXY.x, restartXY.y, "restart");
         restartButton.setInteractive();
         restartButton.on("pointerdown", function () {
             this.scene.start("PlayGame");
         }, this);
-        var scoreXY = this.getTilePosition(-0.9, 1.73);
+        var scoreXY = getTilePosition(-0.9, 1.73);
         this.add.image(scoreXY.x, scoreXY.y, "scorepanel");
 
-        var resetBestTimeXY = this.getTilePosition(-0.9, 4.7);
+        var resetBestTimeXY = getTilePosition(-0.9, 4.7);
         var resetBestTimeBtn = this.add.sprite(resetBestTimeXY.x, resetBestTimeXY.y, "resetbesttime");
         resetBestTimeBtn.setInteractive();
         resetBestTimeBtn.on("pointerdown", function () {
@@ -223,9 +223,9 @@ class playGame extends Phaser.Scene {
         }, this);
 
         this.add.image(scoreXY.x, scoreXY.y - 105, "scorelabels");
-        var textXY = this.getTilePosition(-1.1, 0.0);
+        var textXY = getTilePosition(-1.1, 0.0);
         this.scoreText = this.add.bitmapText(textXY.x, textXY.y, "font", "0");
-        textXY = this.getTilePosition(-1.1, 2.2);
+        textXY = getTilePosition(-1.1, 2.2);
         this.bestScore = localStorage.getItem(gameOptions.localStorageName);
         if (this.bestScore == null) {
             this.bestScore = 0;
@@ -241,7 +241,7 @@ class playGame extends Phaser.Scene {
         var logo = this.add.sprite(game.config.width / 2, game.config.height, "logo");
         logo.setOrigin(0.5, 3.5); //center, bottom
 
-        var gameOverPosition = this.getTilePosition(7, 4.5);
+        var gameOverPosition = getTilePosition(7, 4.5);
         gameOverImage = this.add.image(gameOverPosition.x, gameOverPosition.y, "gameover");
         gameOverImage.setVisible(false);
 
@@ -265,18 +265,11 @@ class playGame extends Phaser.Scene {
 
         });
 
-
-        var romajiArray = ["wa", "ra", "ya", "ma", "ha", "na", "ta", "sa", "ka", "a",
-            "blank", "ri", "blank", "mi", "hi", "ni", "chi", "shi", "ki", "i",
-            "wo", "ru", "yu", "mu", "fu", "nu", "tsu", "su", "ku", "u",
-            "blank", "re", "blank", "me", "he", "ne", "te", "se", "ke", "e",
-            "n", "ro", "yo", "mo", "ho", "no", "to", "so", "ko", "o"];
-
         // Generate the romaji tiles, need to create them as dropzones
         var romajiTileNum = 0;
         for (var i = 0; i < gameOptions.boardSize.rows / 2; i++) {
             for (var j = 0; j < gameOptions.boardSize.cols; j++) {
-                var romajiTilePosition = this.getTilePosition(i, j);
+                var romajiTilePosition = getTilePosition(i, j);
                 this.add.image(romajiTilePosition.x, romajiTilePosition.y, "emptytile");
                 // Add from sprite sheet, last argument gives location
 
@@ -311,7 +304,7 @@ class playGame extends Phaser.Scene {
         var chibiCount = 0;
         for (var i = gameOptions.boardSize.rows / 2; i < gameOptions.boardSize.rows; i++) {
             for (var j = 0; j < gameOptions.boardSize.cols; j++) {
-                var tilePosition = this.getTilePosition(i, j);
+                var tilePosition = getTilePosition(i, j);
                 this.add.image(tilePosition.x, tilePosition.y, "emptytile");
                 // Add from sprite sheet, last argument gives location
 
@@ -338,22 +331,6 @@ class playGame extends Phaser.Scene {
     } //end of create
     update() {
         this.scoreText.text = displayTimeElapsed(this.timedEvent.getElapsedSeconds());
-    }
-
-
-
-    // Given a row and column, determines the tile position in pixels
-
-    getTilePosition(row, col) {
-
-        var posX = gameOptions.tileSpacing * (col + 1) + gameOptions.tileSize * (col + 0.5);
-        var posY = gameOptions.tileSpacing * (row + 1) + gameOptions.tileSize * (row + 0.5);
-        var boardHeight = gameOptions.boardSize.rows * gameOptions.tileSize;
-        boardHeight += (gameOptions.boardSize.rows + 1) * gameOptions.tileSpacing;
-        var offsetY = (game.config.height - boardHeight) / 2;
-        posY += offsetY;
-
-        return new Phaser.Geom.Point(posX, posY);
     }
 
     doDrop(pointer, gameObject, dropZone) {
@@ -425,6 +402,7 @@ function displayTimeElapsed(eTime) {
     return (timeText.text);
 }
 
+// Given a row and column, determines the tile position in pixels
 function getTilePosition(row, col) {
 
     var posX = gameOptions.tileSpacing * (col + 1) + gameOptions.tileSize * (col + 0.5);
