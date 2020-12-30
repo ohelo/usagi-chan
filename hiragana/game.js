@@ -29,7 +29,18 @@ var romajiArray = ["wa", "ra", "ya", "ma", "ha", "na", "ta", "sa", "ka", "a",
 "blank", "re", "blank", "me", "he", "ne", "te", "se", "ke", "e",
 "n", "ro", "yo", "mo", "ho", "no", "to", "so", "ko", "o"];
 
-
+var kanaArray = [["a", 0], ["i", 1], ["u", 2], ["e", 3], ["o", 4],
+["ka", 5], ["ki", 6], ["ku", 7], ["ke", 8], ["ko", 9],
+["sa", 10], ["shi", 11], ["su", 12], ["se", 13], ["so", 14],
+["ta", 15], ["chi", 16], ["tsu", 17], ["te", 18], ["to", 19],
+["na", 20], ["ni", 21], ["nu", 22], ["ne", 23], ["no", 24],
+["ha", 25], ["hi", 26], ["fu", 27], ["he", 28], ["ho", 29],
+["ma", 30], ["mi", 31], ["mu", 32], ["me", 33], ["mo", 34],
+["ya", 35], ["yu", 36], ["yo", 37],
+["ra", 38], ["ri", 39], ["ru", 40], ["re", 41], ["ro", 42],
+["wa", 43], ["wo", 44], ["n", 45],
+["blank", 46], ["blank", 47], ["blank", 48], ["blank", 49]
+];
 
 window.onload = function () {
     var tileAndSpacing = gameOptions.tileSize + gameOptions.tileSpacing;
@@ -135,18 +146,6 @@ class bootGame extends Phaser.Scene {
             }
         }
 
-        var kanaArray = [["a", 0], ["i", 1], ["u", 2], ["e", 3], ["o", 4],
-        ["ka", 5], ["ki", 6], ["ku", 7], ["ke", 8], ["ko", 9],
-        ["sa", 10], ["shi", 11], ["su", 12], ["se", 13], ["so", 14],
-        ["ta", 15], ["chi", 16], ["tsu", 17], ["te", 18], ["to", 19],
-        ["na", 20], ["ni", 21], ["nu", 22], ["ne", 23], ["no", 24],
-        ["ha", 25], ["hi", 26], ["fu", 27], ["he", 28], ["ho", 29],
-        ["ma", 30], ["mi", 31], ["mu", 32], ["me", 33], ["mo", 34],
-        ["ya", 35], ["yu", 36], ["yo", 37],
-        ["ra", 38], ["ri", 39], ["ru", 40], ["re", 41], ["ro", 42],
-        ["wa", 43], ["wo", 44], ["n", 45],
-        ["blank", 46], ["blank", 47], ["blank", 48], ["blank", 49]
-        ];
 
         Phaser.Utils.Array.Shuffle(kanaArray);
 
@@ -161,9 +160,9 @@ class bootGame extends Phaser.Scene {
 
                 if (kanaArray[tileNum][0] != "blank") {
                     var kanaTile = this.add.sprite(tilePosition.x, tilePosition.y, "tiles", kanaArray[tileNum][1]);
-                    kanaTile.setInteractive();
-                    this.input.setDraggable(kanaTile);
-                    kanaTile.setName(kanaArray[tileNum][0]);
+                    //kanaTile.setInteractive();
+                    //this.input.setDraggable(kanaTile);
+                    //kanaTile.setName(kanaArray[tileNum][0]);
                     color.random(125, 255);
                     kanaTile.setTint(color.color);
                 }
@@ -282,22 +281,7 @@ class playGame extends Phaser.Scene {
             }
         }
 
-        // Create an array of kana
-
-        var kanaArray = [["a", 0], ["i", 1], ["u", 2], ["e", 3], ["o", 4],
-        ["ka", 5], ["ki", 6], ["ku", 7], ["ke", 8], ["ko", 9],
-        ["sa", 10], ["shi", 11], ["su", 12], ["se", 13], ["so", 14],
-        ["ta", 15], ["chi", 16], ["tsu", 17], ["te", 18], ["to", 19],
-        ["na", 20], ["ni", 21], ["nu", 22], ["ne", 23], ["no", 24],
-        ["ha", 25], ["hi", 26], ["fu", 27], ["he", 28], ["ho", 29],
-        ["ma", 30], ["mi", 31], ["mu", 32], ["me", 33], ["mo", 34],
-        ["ya", 35], ["yu", 36], ["yo", 37],
-        ["ra", 38], ["ri", 39], ["ru", 40], ["re", 41], ["ro", 42],
-        ["wa", 43], ["wo", 44], ["n", 45],
-        ["blank", 46], ["blank", 47], ["blank", 48], ["blank", 49]
-        ];
-
-        Phaser.Utils.Array.Shuffle(kanaArray);
+        Phaser.Utils.Array.Shuffle(kanaArray);  //Shuffle the kana
 
         var tileNum = 0;
         var color = new Phaser.Display.Color();
