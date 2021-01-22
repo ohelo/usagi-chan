@@ -407,7 +407,7 @@ class playGame extends Phaser.Scene {
     }
 
     makeZone(pos, itemName) {
-        var zone = this.add.zone(pos.x, pos.y, gameOptions.tileSize, gameOptions.tileSize).setRectangleDropZone(2*gameOptions.tileSize, gameOptions.tileSize);
+        var zone = this.add.zone(pos.x, pos.y, 2*gameOptions.tileSize, gameOptions.tileSize).setRectangleDropZone(2*gameOptions.tileSize, gameOptions.tileSize);
         zone.setName(itemName);
         var graphics = this.add.graphics();
         graphics.lineStyle(2, 0x8b0000);
