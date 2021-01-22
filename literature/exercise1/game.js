@@ -14,7 +14,8 @@ var gameOptions = {
     },
 
     tweenSpeed: 50,
-    aspectRatio: 16 / 9,
+//    aspectRatio: 16 / 9,
+    aspectRatio: 16 / 12,
 };
 
 window.onload = function () {
@@ -149,36 +150,37 @@ class playGame extends Phaser.Scene {
         drag5.setInteractive();
         this.input.setDraggable(drag5);
  
+        // Column 2
         itemIndex++;
-        dragPos = getTilePosition(3,8.5);
+        dragPos = getTilePosition(3,8.55);
         var drag6 = this.add.image(dragPos.x, dragPos.y, "drag"+itemArray[itemIndex]);
         drag6.setName("item"+itemArray[itemIndex]);
         drag6.setInteractive();
         this.input.setDraggable(drag6);
  
         itemIndex++;
-        dragPos = getTilePosition(4,8.5);
+        dragPos = getTilePosition(4,8.55);
         var drag7 = this.add.image(dragPos.x, dragPos.y, "drag"+itemArray[itemIndex]);
         drag7.setName("item"+itemArray[itemIndex]);
         drag7.setInteractive();
         this.input.setDraggable(drag7);
 
         itemIndex++;
-        dragPos = getTilePosition(5,8.5);
+        dragPos = getTilePosition(5,8.55);
         var drag8 = this.add.image(dragPos.x, dragPos.y, "drag"+itemArray[itemIndex]);
         drag8.setName("item"+itemArray[itemIndex]);
         drag8.setInteractive();
         this.input.setDraggable(drag8);
 
         itemIndex++;
-        dragPos = getTilePosition(6,8.5);
+        dragPos = getTilePosition(6,8.55);
         var drag9 = this.add.image(dragPos.x, dragPos.y, "drag"+itemArray[itemIndex]);
         drag9.setName("item"+itemArray[itemIndex]);
         drag9.setInteractive();
         this.input.setDraggable(drag9);
 
         itemIndex++;
-        dragPos = getTilePosition(7,8.5);
+        dragPos = getTilePosition(7,8.55);
         var drag10 = this.add.image(dragPos.x, dragPos.y, "drag"+itemArray[itemIndex]);
         drag10.setName("item"+itemArray[itemIndex]);
         drag10.setInteractive();
@@ -193,85 +195,40 @@ class playGame extends Phaser.Scene {
 
         });
         // Drop Zone
-        tempPos = getTilePosition(2.5, 2.5);
+
+        var colLoc = 2.55;
+        tempPos = getTilePosition(2.5, colLoc);
+        this.makeZone(tempPos, "item1");
+
+        tempPos = getTilePosition(3.5, colLoc);
         var zone = this.add.zone(tempPos.x, tempPos.y, gameOptions.tileSize, gameOptions.tileSize).setRectangleDropZone(2*gameOptions.tileSize, gameOptions.tileSize);
-        zone.setName("item1");
-        // Add a visual display of drop zone
-        var graphics = this.add.graphics();
-        graphics.lineStyle(2, 0x8b0000);
-        graphics.strokeRect(zone.x - zone.input.hitArea.width / 2, zone.y - zone.input.hitArea.height / 2, zone.input.hitArea.width, zone.input.hitArea.height);
+        this.makeZone(tempPos, "item2");
+        
+        tempPos = getTilePosition(4.5, colLoc);
+        this.makeZone(tempPos, "item3");
     
-        tempPos = getTilePosition(3.5, 2.5);
-        var zone = this.add.zone(tempPos.x, tempPos.y, gameOptions.tileSize, gameOptions.tileSize).setRectangleDropZone(2*gameOptions.tileSize, gameOptions.tileSize);
-        zone.setName("item2");
-        // Add a visual display of drop zone
-        var graphics = this.add.graphics();
-        graphics.lineStyle(2, 0x8b0000);
-        graphics.strokeRect(zone.x - zone.input.hitArea.width / 2, zone.y - zone.input.hitArea.height / 2, zone.input.hitArea.width, zone.input.hitArea.height);
+        tempPos = getTilePosition(5.5, colLoc);
+        this.makeZone(tempPos, "item4");
     
-        tempPos = getTilePosition(4.5, 2.5);
-        var zone = this.add.zone(tempPos.x, tempPos.y, gameOptions.tileSize, gameOptions.tileSize).setRectangleDropZone(2*gameOptions.tileSize, gameOptions.tileSize);
-        zone.setName("item3");
-        // Add a visual display of drop zone
-        var graphics = this.add.graphics();
-        graphics.lineStyle(2, 0x8b0000);
-        graphics.strokeRect(zone.x - zone.input.hitArea.width / 2, zone.y - zone.input.hitArea.height / 2, zone.input.hitArea.width, zone.input.hitArea.height);
+        tempPos = getTilePosition(9.5, colLoc);
+        this.makeZone(tempPos, "item5");
     
-        tempPos = getTilePosition(5.5, 2.5);
-        var zone = this.add.zone(tempPos.x, tempPos.y, gameOptions.tileSize, gameOptions.tileSize).setRectangleDropZone(2*gameOptions.tileSize, gameOptions.tileSize);
-        zone.setName("item4");
-        // Add a visual display of drop zone
-        var graphics = this.add.graphics();
-        graphics.lineStyle(2, 0x8b0000);
-        graphics.strokeRect(zone.x - zone.input.hitArea.width / 2, zone.y - zone.input.hitArea.height / 2, zone.input.hitArea.width, zone.input.hitArea.height);
+        // Column 2
+        colLoc = 6.5;
+        tempPos = getTilePosition(2.5, colLoc);
+        this.makeZone(tempPos, "item6");
     
-        tempPos = getTilePosition(9.5, 2.5);
-        var zone = this.add.zone(tempPos.x, tempPos.y, gameOptions.tileSize, gameOptions.tileSize).setRectangleDropZone(2*gameOptions.tileSize, gameOptions.tileSize);
-        zone.setName("item5");
-        // Add a visual display of drop zone
-        var graphics = this.add.graphics();
-        graphics.lineStyle(2, 0x8b0000);
-        graphics.strokeRect(zone.x - zone.input.hitArea.width / 2, zone.y - zone.input.hitArea.height / 2, zone.input.hitArea.width, zone.input.hitArea.height);
+        tempPos = getTilePosition(3.5, colLoc);
+        this.makeZone(tempPos, "item7");
     
-        tempPos = getTilePosition(2.5, 6.5);
-        var zone = this.add.zone(tempPos.x, tempPos.y, gameOptions.tileSize, gameOptions.tileSize).setRectangleDropZone(2*gameOptions.tileSize, gameOptions.tileSize);
-        zone.setName("item6");
-        // Add a visual display of drop zone
-        var graphics = this.add.graphics();
-        graphics.lineStyle(2, 0x8b0000);
-        graphics.strokeRect(zone.x - zone.input.hitArea.width / 2, zone.y - zone.input.hitArea.height / 2, zone.input.hitArea.width, zone.input.hitArea.height);
+        tempPos = getTilePosition(4.5, colLoc);
+        this.makeZone(tempPos, "item8");
     
-        tempPos = getTilePosition(3.5, 6.5);
-        var zone = this.add.zone(tempPos.x, tempPos.y, gameOptions.tileSize, gameOptions.tileSize).setRectangleDropZone(2*gameOptions.tileSize, gameOptions.tileSize);
-        zone.setName("item7");
-        // Add a visual display of drop zone
-        var graphics = this.add.graphics();
-        graphics.lineStyle(2, 0x8b0000);
-        graphics.strokeRect(zone.x - zone.input.hitArea.width / 2, zone.y - zone.input.hitArea.height / 2, zone.input.hitArea.width, zone.input.hitArea.height);
+        tempPos = getTilePosition(5.5, colLoc);
+        this.makeZone(tempPos, "item9");
     
-        tempPos = getTilePosition(4.5, 6.5);
-        var zone = this.add.zone(tempPos.x, tempPos.y, gameOptions.tileSize, gameOptions.tileSize).setRectangleDropZone(2*gameOptions.tileSize, gameOptions.tileSize);
-        zone.setName("item8");
-        // Add a visual display of drop zone
-        var graphics = this.add.graphics();
-        graphics.lineStyle(2, 0x8b0000);
-        graphics.strokeRect(zone.x - zone.input.hitArea.width / 2, zone.y - zone.input.hitArea.height / 2, zone.input.hitArea.width, zone.input.hitArea.height);
-    
-        tempPos = getTilePosition(5.5, 6.5);
-        var zone = this.add.zone(tempPos.x, tempPos.y, gameOptions.tileSize, gameOptions.tileSize).setRectangleDropZone(2*gameOptions.tileSize, gameOptions.tileSize);
-        zone.setName("item9");
-        // Add a visual display of drop zone
-        var graphics = this.add.graphics();
-        graphics.lineStyle(2, 0x8b0000);
-        graphics.strokeRect(zone.x - zone.input.hitArea.width / 2, zone.y - zone.input.hitArea.height / 2, zone.input.hitArea.width, zone.input.hitArea.height);
-    
-        tempPos = getTilePosition(9.5, 6.5);
-        var zone = this.add.zone(tempPos.x, tempPos.y, gameOptions.tileSize, gameOptions.tileSize).setRectangleDropZone(2*gameOptions.tileSize, gameOptions.tileSize);
-        zone.setName("item10");
-        // Add a visual display of drop zone
-        var graphics = this.add.graphics();
-        graphics.lineStyle(2, 0x8b0000);
-        graphics.strokeRect(zone.x - zone.input.hitArea.width / 2, zone.y - zone.input.hitArea.height / 2, zone.input.hitArea.width, zone.input.hitArea.height);
+        tempPos = getTilePosition(9.5, colLoc);
+        this.makeZone(tempPos, "item10");
     
 
         this.input.on('dragstart', function (pointer, gameObject) {
@@ -294,6 +251,16 @@ class playGame extends Phaser.Scene {
     update() {
 
     }
+
+    makeZone(pos, itemName) {
+        var zone = this.add.zone(pos.x, pos.y, 2*gameOptions.tileSize, gameOptions.tileSize).setRectangleDropZone(2*gameOptions.tileSize, gameOptions.tileSize);
+        zone.setName(itemName);
+        var graphics = this.add.graphics();
+        graphics.lineStyle(3, 0x8b0000);
+        graphics.strokeRect(zone.x - zone.input.hitArea.width / 2, zone.y - zone.input.hitArea.height / 2, zone.input.hitArea.width, zone.input.hitArea.height);
+        
+            }
+        
 
     doDrop(pointer, gameObject, dropZone) {
         // Check if the drag item has the same name as the drop zone
